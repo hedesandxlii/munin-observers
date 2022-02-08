@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=60.8.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov=muninn --cov-report term --mypy"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "@(abc.)?abstractmethod"
+]
