@@ -10,7 +10,7 @@ class Worker(mn.ObservableMixin):
         self.notify()
 
 
-class Manager(mn.Observer):
+class Manager(mn.Observer[Worker]):
     def update(self, worker: Worker):
         print(f"Manager: Looking good, {worker.name}!")
 

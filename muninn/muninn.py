@@ -4,15 +4,17 @@ from abc import abstractmethod
 from typing import Callable, List, Protocol, TypeVar
 
 T = TypeVar("T")
+T_contra = TypeVar("T_contra", contravariant=True)
 
 _notifications_enabled = True
 
 
 class _NotifyManager:
     """
-    Cheeky context manager that lets you teporarily turn of
+    Cheeky context manager that lets you teporarily turn off
     observer syncronization.
     """
+
     def __enter__(self):
         global _notifications_enabled
         _notifications_enabled = False
@@ -24,17 +26,6 @@ class _NotifyManager:
 
 discretion = _NotifyManager()
 
-class Observer(Protocol):
-    """
-    Observer
-
-    Defines a single function: `update(observable)` that an
-    `ObservableMixin` calls once notified.
-    """
-    @abstractmethod
-    def update(self, observable: ObservableMixin) -> None:
-        ...
-
 
 class ObservableMixin:
     """
@@ -43,6 +34,7 @@ class ObservableMixin:
     Defines the `self.observers` list, `add_observer` to append to that
     and the `notify` method, which is used to notify "registered" observers
     """
+
     def __init__(self):
         self.observers: List[Observer] = []
 
@@ -58,13 +50,29 @@ class ObservableMixin:
         for observer in self.observers:
             observer.update(self)
 
+
+class Observer(Protocol[T_contra]):
+    """
+    Observer
+
+    Defines a single function: `update(observable)` that an
+    `ObservableMixin` calls once notified.
+    """
+
+    @abstractmethod
+    def update(self, observable: T_contra) -> None:
+        ...
+
+
 # FIXME: type should be ~~~ Callable[[ObservableMixin, ...], T]
 MethodOfObservable = Callable[..., T]
+
 
 def notify(function: MethodOfObservable[T]) -> MethodOfObservable[T]:
     """
     A simple decorator that calls notify after `function` returns.
     """
+
     def notify_wrapper(instance: ObservableMixin, *args, **kwargs) -> T:
         result: T = function(instance, *args, **kwargs)
         instance.notify()

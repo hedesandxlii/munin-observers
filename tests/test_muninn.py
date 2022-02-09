@@ -26,6 +26,7 @@ class BasicObservable(muninn.ObservableMixin):
     def set_value_decorated(self, new_value) -> None:
         self.value = new_value
 
+
 @pytest.fixture
 def simple_obs_pair() -> Tuple[muninn.Observer, muninn.ObservableMixin]:
     observer = BasicObserver()
@@ -37,10 +38,12 @@ def simple_obs_pair() -> Tuple[muninn.Observer, muninn.ObservableMixin]:
 
 # ===== Test cases ===== #
 
+
 def test_value_change(simple_obs_pair):
     observer, observable = simple_obs_pair
     observable.set_value(11)
     assert observer.updated
+
 
 def test_value_change_with_decorator(simple_obs_pair):
     observer, observable = simple_obs_pair
