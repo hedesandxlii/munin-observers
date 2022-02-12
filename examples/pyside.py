@@ -20,7 +20,7 @@ class PushButton(QPushButton):  # implements the Observer[ButtonModel]-Protocol
         model.add_observer(self)
         self.clicked.connect(model.increase)
 
-    def update(self, observable: ButtonModel):
+    def act(self, observable: ButtonModel):
         self.setText(str(observable.number_of_presses))
 
 

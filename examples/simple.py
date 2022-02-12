@@ -11,7 +11,7 @@ class Worker(mn.ObservableMixin):
 
 
 class Manager(mn.Observer[Worker]):
-    def update(self, worker: Worker):
+    def act(self, worker: Worker):
         print(f"Manager: Looking good, {worker.name}!")
 
 

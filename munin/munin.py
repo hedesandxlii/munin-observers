@@ -48,19 +48,19 @@ class ObservableMixin:
             return
 
         for observer in self.observers:
-            observer.update(self)
+            observer.act(self)
 
 
 class Observer(Protocol[T_contra]):
     """
     Observer
 
-    Defines a single function: `update(observable)` that an
+    Defines a single function: `act(observable)` that an
     `ObservableMixin` calls once notified.
     """
 
     @abstractmethod
-    def update(self, observable: T_contra) -> None:
+    def act(self, observable: T_contra) -> None:
         ...
 
 
