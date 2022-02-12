@@ -1,9 +1,24 @@
-Munin
-=====
-Passionate introduction here plz
+# Munin
 
-Examples
---------
+
+The observer pattern implementation with a cool name.
+
+
+### Features:
+- Simple observer implementation with Observer (`Protocol`) and ObservableMixin.
+- Concept of *discreteness* to break infinite callback loops>
+- Simple, **No python wizardry!**
+
+
+### Goals:
+- **Simplicity**: Limit python wizardry
+- **Concise**: *SLOC* should never reach thousands
+- **Flexible**: Should be able to cover every Pythonista's observing needs.
+- **Typed**: Keep `munin` typed and type-safe to the furthest extent possible.
+- **Well tested**: Code coverage should be *"at least"* 100%.
+
+## Examples
+
 
 
 ```python
