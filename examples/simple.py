@@ -1,4 +1,4 @@
-import muninn as mn
+import munin as mn
 
 
 class Worker(mn.ObservableMixin):

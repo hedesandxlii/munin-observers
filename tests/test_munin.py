@@ -1,19 +1,18 @@
 from typing import Tuple
 
+import munin
 import pytest
 
-import muninn
 
-
-class BasicObserver(muninn.Observer):
+class BasicObserver(munin.Observer):
     def __init__(self):
         self.updated = False
 
-    def update(self, observable: muninn.ObservableMixin):
+    def update(self, observable: munin.ObservableMixin):
         self.updated = True
 
 
-class BasicObservable(muninn.ObservableMixin):
+class BasicObservable(munin.ObservableMixin):
     def __init__(self):
         super().__init__()
         self.value = 10
@@ -22,13 +21,13 @@ class BasicObservable(muninn.ObservableMixin):
         self.value = new_value
         self.notify()
 
-    @muninn.notify
+    @munin.notify
     def set_value_decorated(self, new_value) -> None:
         self.value = new_value
 
 
 @pytest.fixture
-def simple_obs_pair() -> Tuple[muninn.Observer, muninn.ObservableMixin]:
+def simple_obs_pair() -> Tuple[munin.Observer, munin.ObservableMixin]:
     observer = BasicObserver()
     observable = BasicObservable()
     observable.add_observer(observer)
@@ -59,7 +58,7 @@ def test_adding_observer_twice_raises_error(simple_obs_pair):
 
 def test_discretion_turns_off_notify(simple_obs_pair):
     observer, observable = simple_obs_pair
-    with muninn.discretion:
+    with munin.discretion:
         observable.set_value(11)
 
     assert not observer.updated
@@ -67,4 +66,4 @@ def test_discretion_turns_off_notify(simple_obs_pair):
 
 def test_observer_isnt_instantiable():
     with pytest.raises(TypeError):
-        muninn.Observer()
+        munin.Observer()
