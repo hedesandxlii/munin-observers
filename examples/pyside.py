@@ -1,19 +1,19 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
 
-import munin as mn
+from munin import ObservableMixin, notify
 
 
-class ButtonModel(mn.ObservableMixin):
+class ButtonModel(ObservableMixin):
     def __init__(self):
         super().__init__()
         self.number_of_presses: int = 0
 
-    @mn.notify
+    @notify
     def increase(self):
         self.number_of_presses += 1
 
 
-class PushButton(QPushButton):  # implements the Observer[ButtonModel]-Protocol
+class PushButton(QPushButton):  # implements Observer[ButtonModel] protocol
     def __init__(self, text: str, parent: QWidget, model: ButtonModel):
         super().__init__(text, parent)
 

@@ -1,7 +1,7 @@
-import munin as mn
+from munin import ObservableMixin, Observer
 
 
-class Worker(mn.ObservableMixin):
+class Worker(ObservableMixin):
     def __init__(self, name: str):
         super().__init__()
         self.name = name
@@ -10,7 +10,7 @@ class Worker(mn.ObservableMixin):
         self.notify()
 
 
-class Manager(mn.Observer[Worker]):
+class Manager(Observer[Worker]):
     def act(self, worker: Worker):
         print(f"Manager: Looking good, {worker.name}!")
 
