@@ -10,7 +10,6 @@ extend-exclude = "examples"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--cov --mypy"
 testpaths = [
     "tests",
 ]
@@ -19,4 +18,13 @@ testpaths = [
 show_missing = true
 exclude_lines = [
     "@(abc.)?abstractmethod"
+]
+
+[tool.mypy]
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+exclude = [
+    'examples/',
+    'venv/',
 ]
