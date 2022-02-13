@@ -64,14 +64,14 @@ class MyTextModel(ObservableMixin):
     # * def notify(self): ...
 
 
-class MyTextField(FrameworkTextField, Observer[MyModel]):
+class MyTextField(FrameworkTextField, Observer[MyTextModel]):
     def __init__(self, model):
         FrameworkTextField.__init__(self)
 
         model.add_observer(self)
         self.content_changed_callbacks.append(model.set_text)
 
-    def act(self, observable: MyModel):
+    def act(self, observable: MyTextModel):
         """
         act() is munin's "update"-function.
         When an Observable notify:s, the Observable passes itself through this function to
@@ -91,11 +91,11 @@ This can be combatted with *"Discretion"*, **litteraly**.
 ```python
 from munin import discretion, discrete, ...
 
-class MyTextField(FrameworkTextField, Observer[MyModel]):
+class MyTextField(FrameworkTextField, Observer[MyTextModel]):
     ...
 
     @discrete  # "Discretion" with a decorator
-    def act(self, observable: MyModel):
+    def act(self, observable: MyTextModel):
         # "Discretion" with a context manager
         with discretion:
             self.set_content(observable.content)
@@ -107,7 +107,7 @@ the inheritance can be omitted without any repercussions.
 
 ```python
 class MyTextField(FrameworkTextField):
-    def act(self, observable: MyModel):
+    def act(self, observable: MyTextModel):
         """Still satisfies the Observer Protocol"""
         pass
 ```
