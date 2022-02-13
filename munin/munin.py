@@ -5,6 +5,7 @@ from typing import Callable, List, Protocol, TypeVar
 
 T = TypeVar("T")
 T_contra = TypeVar("T_contra", contravariant=True)
+Function = Callable[..., T]
 
 _notifications_enabled = True
 
@@ -64,11 +65,7 @@ class Observer(Protocol[T_contra]):
         ...
 
 
-# FIXME: type should be ~~~ Callable[[ObservableMixin, ...], T]
-MethodOfObservable = Callable[..., T]
-
-
-def notify(function: MethodOfObservable[T]) -> MethodOfObservable[T]:
+def notify(function: Function[T]) -> Function[T]:
     """
     A simple decorator that calls notify after `function` returns.
     """
@@ -81,7 +78,7 @@ def notify(function: MethodOfObservable[T]) -> MethodOfObservable[T]:
     return notify_wrapper
 
 
-def discrete(function: MethodOfObservable[T]) -> MethodOfObservable[T]:
+def discrete(function: Function[T]) -> Function[T]:
     """
     A simple decorator that calls `function` is the `discretion` context.
     """
