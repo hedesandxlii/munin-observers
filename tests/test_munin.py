@@ -82,3 +82,13 @@ def test_instantiability():
 
     # Observable should be instantiable
     munin.ObservableMixin()
+
+
+def test_discrete_decorator():
+    observer = ObserverWithDecoratedAct()
+    observable = munin.ObservableMixin()
+    observable.add_observer(observer)
+
+    observable.notify()
+
+    assert observer.number_of_notifies == 1

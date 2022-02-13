@@ -1,3 +1,3 @@
-from .munin import ObservableMixin, Observer, discretion, notify
+from .munin import ObservableMixin, Observer, discrete, discretion, notify
 
-__all__ = ["ObservableMixin", "Observer", "discretion", "notify"]
+__all__ = ["ObservableMixin", "Observer", "discrete", "discretion", "notify"]

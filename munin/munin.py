@@ -79,3 +79,16 @@ def notify(function: MethodOfObservable[T]) -> MethodOfObservable[T]:
         return result
 
     return notify_wrapper
+
+
+def discrete(function: MethodOfObservable[T]) -> MethodOfObservable[T]:
+    """
+    A simple decorator that calls `function` is the `discretion` context.
+    """
+
+    def discretion_wrapper(instance: ObservableMixin, *args, **kwargs) -> T:
+        with discretion:
+            result: T = function(instance, *args, **kwargs)
+        return result
+
+    return discretion_wrapper
