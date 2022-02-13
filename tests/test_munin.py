@@ -5,15 +5,7 @@ import pytest
 import munin
 
 
-class BasicObserver(munin.Observer):
-    def __init__(self):
-        self.notified = False
-
-    def act(self, observable: munin.ObservableMixin):
-        self.notified = True
-
-
-class BasicObservable(munin.ObservableMixin):
+class SimpleObservable(munin.ObservableMixin):
     def __init__(self):
         super().__init__()
         self.value = 10
@@ -27,10 +19,28 @@ class BasicObservable(munin.ObservableMixin):
         self.value = new_value
 
 
+class SimpleObserver(munin.Observer[SimpleObservable]):
+    def __init__(self):
+        self.notified = False
+
+    def act(self, _: SimpleObservable):
+        self.notified = True
+
+
+class ObserverWithDecoratedAct(munin.Observer[munin.ObservableMixin]):
+    def __init__(self):
+        self.number_of_notifies = 0
+
+    @munin.discrete
+    def act(self, observable: SimpleObservable):
+        self.number_of_notifies += 1
+        observable.notify()  # This should be NOP since we are in a discretion context.
+
+
 @pytest.fixture
 def simple_obs_pair() -> Tuple[munin.Observer, munin.ObservableMixin]:
-    observer = BasicObserver()
-    observable = BasicObservable()
+    observer = SimpleObserver()
+    observable = SimpleObservable()
     observable.add_observer(observer)
 
     return observer, observable
@@ -65,6 +75,10 @@ def test_discretion_turns_off_notify(simple_obs_pair):
     assert not observer.notified
 
 
-def test_observer_isnt_instantiable():
+def test_instantiability():
+    # Observer should not be instantiable
     with pytest.raises(TypeError):
         munin.Observer()
+
+    # Observable should be instantiable
+    munin.ObservableMixin()
