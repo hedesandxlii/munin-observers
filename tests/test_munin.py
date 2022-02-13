@@ -92,3 +92,13 @@ def test_discrete_decorator():
     observable.notify()
 
     assert observer.number_of_notifies == 1
+
+
+def test_using_munin_notify_decorator_on_non_subclasses_should_raise_type_error():
+    class NotMuninSubclass:
+        @munin.notify
+        def foo(self):
+            ...
+
+    with pytest.raises(TypeError):
+        NotMuninSubclass().foo()

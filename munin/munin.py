@@ -72,7 +72,14 @@ def notify(function: Function[T]) -> Function[T]:
 
     def notify_wrapper(instance: ObservableMixin, *args, **kwargs) -> T:
         result: T = function(instance, *args, **kwargs)
-        instance.notify()
+
+        try:
+            instance.notify()
+        except AttributeError as ae:
+            raise TypeError(
+                f"{instance} is probably not a subclass of ObservableMixin."
+            ) from ae
+
         return result
 
     return notify_wrapper
